@@ -1,17 +1,41 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 app = Flask(__name__)
+
+SPORTS = [
+    "Cricket",
+    "Football", 
+    "Hockey"
+]
+
+Registrants = {}
 
 @app.route('/')
 def index():
     
-    return render_template('index.html')
+    return render_template('index.html', sports=SPORTS)
 
 @app.route('/register', methods=["POST"])
 def register():
+
+
+    #Validate Name
+    if not request.form.get("name"):
+        return render_template("error.html", message="Missing name")
     
-    #Validate Submission
-    if not request.form.get("name") or request.form.get("sport") not in ["Cricket", "Football", "Hockey"]:
-        return render_template("failure.html")
+    #Validate Sport
+    sport = request.form.get("sport") 
+    if not sport:
+        return render_template("error.html", message="Missing Sport")
+    if sport not in SPORTS:
+        return render_template("error.html", message="Invalid Sport")
     
-    #Confirm Registration
-    return render_template("success.html")
+    # #Confirm Registration
+    return redirect("/registrants")
+    
+    #Remenber Registrants 
+    Registrants[name] = sport
+
+@app.route("/registrants")
+def registrants():
+    return render_template("registrants.html", registrants=Registrants)
+    
