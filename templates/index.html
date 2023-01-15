@@ -1,13 +1,9 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <h1>Register</h1>
-    <form action="/register" method="post">
-        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
-        <input autocomplete="off" name="email" placeholder="Email" type="email">
-            {% for sport in sports %}
-                <input type="radio" name="sport" value="{{ sport }}"> {{ sport }}
-            {% endfor %}    
-        <input type="Submit" value="Register">
-    </form>
+  {% for post in posts %}
+    <h1>{{ post.title }}</h1>
+    <p>By {{ post.author }} on {{ post.date_posted }}</p>
+    <p>{{ post.summary }}</p>
+    {% endfor %}
 {% endblock %}
